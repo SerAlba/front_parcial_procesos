@@ -179,35 +179,37 @@ function evenCloseAlertMsjEditProduct() {
 }
 
 const btnInsertProducts = document.getElementById('btnInsertProducts');
-btnInsertProducts.addEventListener('click', () => {
-    const alertMsjEditProduct = document.getElementById("alertMsjEditProduct");
-    const btnCloseMInsertProducts = document.getElementById("btnCloseMInsertProducts");
-
-    const product = new Product();
-    product.insertProducts()
-        .then(result => {
-            const statusCode = result.statusCode;
-            const data = result.data;
-
-            if (statusCode === 400) {
-                console.log(data);
-            } else {
-                btnCloseMInsertProducts.click();
-
-                printListProducts(1);
-
-                alertMsjEditProduct.classList.remove("hidden");
-                alertMsjEditProduct.classList.add("alert-info");
-                alertMsjEditProduct.innerHTML = `<strong>Success!</strong> ${data.message}
-                <button type="button" class="btn-close" id="btnCloseAlertMsjEditProduct"></button>`;
-
-                evenCloseAlertMsjEditProduct();
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        });
-});
+if (btnInsertProducts) {
+    btnInsertProducts.addEventListener('click', () => {
+        const alertMsjEditProduct = document.getElementById("alertMsjEditProduct");
+        const btnCloseMInsertProducts = document.getElementById("btnCloseMInsertProducts");
+    
+        const product = new Product();
+        product.insertProducts()
+            .then(result => {
+                const statusCode = result.statusCode;
+                const data = result.data;
+    
+                if (statusCode === 400) {
+                    console.log(data);
+                } else {
+                    btnCloseMInsertProducts.click();
+    
+                    printListProducts(1);
+    
+                    alertMsjEditProduct.classList.remove("hidden");
+                    alertMsjEditProduct.classList.add("alert-info");
+                    alertMsjEditProduct.innerHTML = `<strong>Success!</strong> ${data.message}
+                    <button type="button" class="btn-close" id="btnCloseAlertMsjEditProduct"></button>`;
+    
+                    evenCloseAlertMsjEditProduct();
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    });
+}
 
 const btnLogout = document.getElementById("btnLogout");
 if (btnLogout) {
