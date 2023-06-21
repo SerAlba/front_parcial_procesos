@@ -1,5 +1,10 @@
 window.addEventListener("load", () => {
-    printListProducts(1);
+    const dataUser = localStorage.getItem('dataUser');
+    if (dataUser == null) {
+        location.href = "../login.html";
+    } else {
+        printListProducts(1);
+    }
 });
 
 var currentPage = 0;
@@ -22,7 +27,7 @@ function printListProducts(_page) {
                 console.log(data);
             } else {
                 const numberProducts = products.data.length;
-                
+
                 if (numberProducts > 0) {
                     const numberPage = Math.ceil(numberProducts / 10);
 
@@ -30,24 +35,24 @@ function printListProducts(_page) {
                         const li = document.createElement('li');
                         li.setAttribute("id", `page${index}`);
                         li.setAttribute("onclick", `printListProducts(${index});`);
-    
+
                         if (_page == index) {
                             li.setAttribute("class", "page-item pointer active");
                         } else {
                             li.setAttribute("class", "page-item pointer");
                         }
-    
+
                         li.innerHTML = `<div class="page-link">${index}</div>`;
                         contPagination.appendChild(li);
                     }
-    
+
                     var counter = 0;
                     const start = _page == 1 ? _page : ((_page - 1) * 10) + 1;
                     const end = start + 9;
-    
+
                     products.data.forEach(product => {
                         counter++;
-    
+
                         if (counter >= start && counter <= end) {
                             const tr = document.createElement('tr');
                             tr.innerHTML = `<th scope="row">${product.id}</th>
@@ -66,7 +71,7 @@ function printListProducts(_page) {
                                                     </svg>
                                                 </div>
                                             </td>`;
-    
+
                             tableProducts.appendChild(tr);
                         }
                     });
@@ -124,10 +129,10 @@ if (btnMEditProduct) {
         const btnCloseMEditProduct = document.getElementById("btnCloseMEditProduct");
 
         const data = {
-            title       : nameMEditProduct.value,
-            price       : priceMEditProduct.value,
-            category    : categoryMEditProduct.value,
-            description : descriptionMEditProduct.value
+            title: nameMEditProduct.value,
+            price: priceMEditProduct.value,
+            category: categoryMEditProduct.value,
+            description: descriptionMEditProduct.value
         }
 
         const product = new Product();
@@ -147,7 +152,7 @@ if (btnMEditProduct) {
                     evenCloseAlertMsjEditProduct();
                 } else {
                     btnCloseMEditProduct.click();
-                    
+
                     printListProducts(currentPage);
 
                     alertMsjEditProduct.classList.remove("hidden");
@@ -165,7 +170,7 @@ if (btnMEditProduct) {
     })
 }
 
-function evenCloseAlertMsjEditProduct () {
+function evenCloseAlertMsjEditProduct() {
     const btnCloseAlertMsjEditProduct = document.getElementById('btnCloseAlertMsjEditProduct');
     btnCloseAlertMsjEditProduct.addEventListener('click', () => {
         const alertMsjEditProduct = document.getElementById("alertMsjEditProduct");
@@ -188,7 +193,7 @@ btnInsertProducts.addEventListener('click', () => {
                 console.log(data);
             } else {
                 btnCloseMInsertProducts.click();
-                
+
                 printListProducts(1);
 
                 alertMsjEditProduct.classList.remove("hidden");
@@ -203,3 +208,11 @@ btnInsertProducts.addEventListener('click', () => {
             console.log(error);
         });
 });
+
+const btnLogout = document.getElementById("btnLogout");
+if (btnLogout) {
+    btnLogout.addEventListener("click", () => {
+        localStorage.removeItem("dataUser");
+        location.href = "../login.html";
+    })
+}
