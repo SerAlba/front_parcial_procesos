@@ -74,4 +74,28 @@ class Product {
                 });
         });
     }
+
+    insertProducts () {
+        const dataUser = localStorage.getItem('dataUser');
+        const token = JSON.parse(dataUser).data.token;
+
+        return new Promise((resolve, reject) => {
+            fetch(`${Product.URLBASE}/createProduct`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+                .then(response => {
+                    const statusCode = response.status;
+                    return response.json()
+                        .then(data => {
+                            resolve({ statusCode, data });
+                        });
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
 }
