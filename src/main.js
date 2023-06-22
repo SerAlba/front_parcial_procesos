@@ -51,6 +51,7 @@ if (btnRegister) {
     const inputAddress = document.getElementById("inputAddress").value;
     const inputBirthday = document.getElementById("inputBirthday").value;
     const alertErrorRegister = document.getElementById("alertErrorRegister");
+    const inputConfirmPassword = document.getElementById("inputConfirmPassword").value;
 
     if (
       inputFirstName.length === 0 ||
@@ -66,10 +67,6 @@ if (btnRegister) {
     } else if (inputPassword !== inputConfirmPassword) {
       alertErrorRegister.classList.remove("hidden");
       alertErrorRegister.innerHTML = "<strong>Error!</strong> Passwords do not match";
-    } else if (!passwordRegex.test(inputPassword)) {
-      alertErrorRegister.classList.remove("hidden");
-      alertErrorRegister.innerHTML =
-        "<strong>Error!</strong> Password must contain at least 8 characters, including uppercase and lowercase letters, and numbers";
     } else {
       alertErrorRegister.classList.add("hidden");
 
@@ -84,28 +81,28 @@ if (btnRegister) {
 
       const auth = new Auth();
 
-    // Call the register method and handle the response
-    auth.register(data)
-      .then(result => {
-        const statusCode = result.statusCode;
-        const responseData = result.data;
+      // Call the register method and handle the response
+      auth.register(data)
+        .then((result) => {
+          const statusCode = result.statusCode;
+          const responseData = result.data;
 
-        // Handle the response based on the status code
-        if (statusCode === 200) {
-          // Registration success
-          console.log("Registration successful", responseData);
-          location.href = "./login.html"; // Redireccionar a la página de inicio de sesión        } else {
-        } else {
-          // Registration failed
+          // Handle the response based on the status code
+          if (statusCode === 200) {
+            // Registration success
+            console.log("Registration successful", responseData);
+            location.href = "./login.html"; // Redirect to the login page
+          } else {
+            // Registration failed
+            alertErrorRegister.classList.remove("hidden");
+            alertErrorRegister.innerHTML = `<strong>Error!</strong> ${responseData.data}`;
+          }
+        })
+        .catch((error) => {
+          console.error("Error during registration", error);
           alertErrorRegister.classList.remove("hidden");
-          alertErrorRegister.innerHTML = `<strong>Error!</strong> ${responseData.data}`;
-        }
-      })
-      .catch(error => {
-        console.error("Error during registration", error);
-        alertErrorRegister.classList.remove("hidden");
-        alertErrorRegister.innerHTML = `<strong>Error!</strong> ${error}`;
-      });
+          alertErrorRegister.innerHTML = `<strong>Error!</strong> ${error}`;
+        });
     }
   });
 }
